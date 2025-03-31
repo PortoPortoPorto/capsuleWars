@@ -1,0 +1,23 @@
+{
+	"1": {"Name": "Shortsword Soldier", "HPMax": 8, "HPCurrent": 8, "Att": 5, "AttRg": 1, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShortswordSoldier.png"}, 
+	"2": {"Name": "Spear Soldier", "HPMax": 8, "HPCurrent": 8, "Att": 4, "AttRg": 2, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/SpearSoldier.png"},
+	"3": {"Name": "Shield Soldier", "HPMax": 8, "HPCurrent": 8, "Att": 3, "AttRg": 1, "Def": 4, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShieldSoldier.png"},
+	"4": {"Name": "Shortbow Archer", "HPMax": 8, "HPCurrent": 8, "Att": 4, "AttRg": 5, "Def": 1, "Mov": 4, "Sp": 4, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShortbowArcher.png"},
+	"5": {"Name": "Battle Hound", "HPMax": 7, "HPCurrent": 7, "Att": 5, "AttRg": 1, "Def": 1, "Mov": 5, "Sp": 5, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/BattleHound.png"},
+	"6": {"Name": "Squire", "HPMax": 7, "HPCurrent": 7, "Att": 3, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 4, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/Squire.png"},
+	"7": {"Name": "Battle Medic", "HPMax": 8, "HPCurrent": 8, "Att": 3, "AttRg": 1, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 2, "BP": 2, "Pos": {}, "Index": "", "Team": "", "Img": "assets/BattleMedic.png"},
+	"8": {"Name": "Bastard Sword Soldier", "HPMax": 8, "HPCurrent": 8, "Att": 6, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 3, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/BastardSwordSoldier.png"},
+	"9": {"Name": "Apprentice Mage", "HPMax": 6, "HPCurrent": 6, "Att": 2, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 2, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ApprenticeMage.png"},
+	"10": {"Name": "Cute Demon", "HPMax": 6, "HPCurrent": 6, "Att": 3, "AttRg": 1, "Def": 1, "Mov": 3, "Sp": 3, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/CuteDemon.png"},
+	"11": {"Name": "Demon Warrior", "HPMax": 8, "HPCurrent": 8, "Att": 4, "AttRg": 1, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 0, "Pos": {}, "Index": "", "Team": "", "Img": "assets/DemonWarrior.png"},
+	"12": {"Name": "Grotspitter", "HPMax": 7, "HPCurrent": 7, "Att": 4, "AttRg": 4, "Def": 2, "Mov": 5, "Sp": 5, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/Grotspitter.png"},
+	"13": {"Name": "Pitchfork Minion", "HPMax": 8, "HPCurrent": 8, "Att": 4, "AttRg": 2, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/PitchforkMinion.png"},
+	"14": {"Name": "Miniature Devils", "HPMax": 8, "HPCurrent": 8, "Att": 8, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 6, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/MiniatureDevils.png"},
+	"15": {"Name": "Curseweaver Apprentice", "HPMax": 6, "HPCurrent": 6, "Att": 2, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 2, "Pos": {}, "Index": "", "Team": "", "Img": "assets/CurseweaverApprentice.png"},
+	"16": {"Name": "Ambitious Townsfolk", "HPMax": 6, "HPCurrent": 6, "Att": 2, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 3, "Ev": 1, "BP": 0, "Pos": {}, "Index": "", "Team": "", "Img": "assets/AmbitiousTownsfolk.png"},
+	"17": {"Name": "Wily Trapper", "HPMax": 7, "HPCurrent": 7, "Att": 3, "AttRg": 1, "Def": 1, "Mov": 4, "Sp": 5, "Ev": 2, "BP": 2, "Pos": {}, "Index": "", "Team": "", "Img": "assets/WilyTrapper.png"},
+	"18": {"Name": "Greedy Lurker", "HPMax": 6, "HPCurrent": 6, "Att": 2, "AttRg": 1, "Def": 1, "Mov": 5, "Sp": 4, "Ev": 2, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShortswordSoldier.png"},
+	"19": {"Name": "Whip Minion", "HPMax": 8, "HPCurrent": 8, "Att": 4, "AttRg": 2, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShortswordSoldier.png"},
+	"20": {"Name": "Flamethrower", "HPMax": 8, "HPCurrent": 8, "Att": 3, "AttRg": 3, "Def": 2, "Mov": 4, "Sp": 4, "Ev": 1, "BP": 1, "Pos": {}, "Index": "", "Team": "", "Img": "assets/ShortswordSoldier.png"}
+
+}
