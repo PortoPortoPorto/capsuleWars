@@ -5,7 +5,6 @@
 
 
 
-
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { BattleContext } from '../context/BattleContext.jsx';
@@ -15,11 +14,11 @@ const GridMap = () => {
 			const { battle } = useContext(BattleContext);
 			// div classes for grid
 			const regClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center text-black text-xs';
-			const friendlyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:bg-red-300 cursor-pointer';
-			const enemyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:bg-green-600 cursor-pointer';
-			const currentUnitFriendly = 'h-[55px] w-[55px] border-1 border-red-100 flex items-center justify-center  hover:bg-red-300 cursor-pointer';
-			const currentUnitEnemy = 'h-[55px] w-[55px] border-1 border-green-100 flex items-center justify-center  hover:bg-green-600 cursor-pointer'; 
-			const movementTile = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-[#171a18] text-[#171a18] cursor-pointer text-xs';
+			const friendlyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-red-700 cursor-pointer';
+			const enemyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-green-700 cursor-pointer';
+			const currentUnitFriendly = 'h-[55px] w-[55px] border-1 border-red-700 flex items-center justify-center hover:border-2  cursor-pointer';
+			const currentUnitEnemy = 'h-[55px] w-[55px] border-1 border-green-700 flex items-center justify-center hover:border-2 cursor-pointer'; 
+			const movementTile = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-[#171a18] text-[#171a18] hover:border-neutral-600 text-xs';
 
 
 
@@ -43,14 +42,15 @@ const GridMap = () => {
   		{ x: 13, y: 10 }, // Was 160
 	]);
 	// Set all unit positions after friendly and enemy have been set, to track untraversable movement tiles
-	const [allUnitPositions, setAllUnitPositions] = useState([
-
-	])
+	const [allUnitPositions, setAllUnitPositions] = useState([])
 
 	// Toggle if current unit has been highlighted by UI
 	const [currentUnit, setCurrentUnit] = useState(false);
 	//Track current movement range. Reset at each unit end of turn
 	const [movementRange, setMovementRange ] = useState([]); 
+	//Track if current changes are rendered to avoid multiple re-renders (for unit positions)/ Toggle to false when you need a re-render via the useEffect
+	const [changesRendered, setChangesRendered] = useState(false);
+
 
 
 	// 2) load friendly and enemy unit objects. Call with array of id numbers
@@ -116,6 +116,7 @@ const GridMap = () => {
 				console.warn(`No tile found for unit at x:${gridX}, y:${gridY}`);
 			}
 		}
+		console.log('GRID POST RENDERUNITS:', gridToRender);
 		setGridState(gridToRender);
 	}
 
@@ -207,22 +208,22 @@ const GridMap = () => {
 
  
 	useEffect(() => {
-		if(gridLoaded === true) return;
-		else renderGrid();
-	}, [])
+		//if(gridLoaded || changesRendered) return;
+		
+		const setupAll = async () => {
+			await renderGrid(); // Set gridState and load units
+			if(battle.friendlyUnits.length > 0 && battle.enemyUnits.length > 0 && changesRendered === false) {
+				const completeUnits = [...battle.friendlyUnits, ...battle.enemyUnits];
+				renderUnits(completeUnits); // updates grid with units
+				battle.setAllUnits(completeUnits);
+				setAllUnitPositions(completeUnits.map((unit) => unit.Pos));
+				setChangesRendered(true);
+			};
+		};
+		setupAll();
+	}, [gridLoaded, changesRendered]);
 
 
-	// Render units on grid once data has been set in state NOTE: BE CAREFUL WITH SEQUENCING OF STATE UPDATES HERE
-	useEffect(() => {
-		if(battle.friendlyUnits.length > 0 && battle.enemyUnits.length > 0) {
-			let completeUnits = [...battle.friendlyUnits, ...battle.enemyUnits];
-			renderUnits(completeUnits);
-			battle.setAllUnits(completeUnits);
-			console.log('completeUnits', completeUnits);
-			setAllUnitPositions(completeUnits.map((unit) => unit.Pos));
-		}
-		// units should re-render on any change to battle.friendly/battle.enemy units 
-	}, [battle.friendlyUnits, battle.enemyUnits])
 
 
 	// Highlight current unit if gridState has rendered and turnOrder has been set in global context
@@ -258,7 +259,7 @@ const GridMap = () => {
      					(<div key ={`x:${tile.x}-y:${tile.y}`} className={tile.className} onMouseOver={() => assignHoveredUnit(tile)}>
      						<img src={tile.children.props.src} alt={tile.children.props.alt}/></div>) 
      					:
-     					 (<div key ={`x:${tile.x}-y:${tile.y}`} className={tile.className}>
+     					 (<div key ={`x:${tile.x}-y:${tile.y}`} className={tile.className} style={tile.className === movementTile ? { cursor: "url(/assets/BootCursor.png) 4 4, pointer" } : {}}>
      						{`x:${tile.x} y:${tile.y}`}</div>)
      					))} 
             	</div>

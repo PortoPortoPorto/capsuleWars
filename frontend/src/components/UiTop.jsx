@@ -38,9 +38,10 @@ const UiTop = () => {
 				{ battle.turnOrder ? 
 					(battle.allUnits.map((unit) => 
 						<div className={`h-[45px] w-[45px] m-1 ${unit.Team === 'friendly' ? 'bg-red-300' : 'bg-green-400'} flex items-center justify-center rounded-md`}><img src={unit.Img}></img></div>
-					)) 
+					))
 				 : ''
 				}
+				<div className="h-10 w-10" style={{ cursor: "url(/assets/BootCursor.png) 0 0, pointer" }}>Test</div>
 			</div> 
 		</>
 	)

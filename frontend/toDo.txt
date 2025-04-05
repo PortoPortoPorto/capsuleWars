@@ -1,15 +1,14 @@
 To Do:
 
-1) Turn order in global state 
+* Move current unit functionality 
 
-2) Hovering over unit displays info in UiRight 
-
-3) Current Unit displays info in UiLeft
-
-4) Move current unit functionality 
-
-5) End Unit Move functionality, move on to next unit and change turn order 
+* End Unit Move functionality, move on to next unit and change turn order 
 
 
 
 
+Done:
+
+* turn order in global state 
+* Hovering over unit displays info in UiRight 
+* Current Unit displays info in UiLeft

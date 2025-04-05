@@ -1,0 +1,50 @@
+Notes on the Battle System
+
+GENERAL
+
+	* 6 on 6 battles on a 16w x 11h grid (subject to change) 
+
+	* Turn order determined at start of each round. Units sorted by speed, then randomly ordered at each matching speed level. 
+
+
+DISPLAY
+
+	* GridMap.jsx -> Battle area with units, tiles, obstacles, movement, combat etc
+
+	* UiTop.jsx -> Display turn order. Resets after each round.
+
+	* UiLeft.jsx -> Display current unit statistics, statuses, img and special abilities (which are selected here).
+
+	* UiRight.jsx -> Display hovered unit statistics, statuses, img and abilities.
+
+	* UiBtm.jsx -> Display combat / special move preview, inc % of hit, amount of Dmg, effects etc. 
+
+
+TURNS
+
+	* Unit is automatically selected once their turn begins, and is displayed in UiLeft.jsx.
+
+	* Unit can move once and use an attack/ability/end turn once.
+
+	* Movement may come before or after action, but never both. (unless unit has special ability). 
+
+	* When turn ends, unit is removed from the turn order array until the beginning of the next round.
+
+	* Special abilites cost BP, and are selected from UiLeft.jsx.
+
+	* Movement and attack abilities are inititated in Gridmap.jsx, and are indicated by different cursors. 
+
+
+DESTROYING UNITS
+
+	* When a unit's HP is 0, they die and are rendered as a corpse. 
+
+	* Units can be revived by certain abilities, but these are rare.
+
+	* Necromancy effects can turn dead units into skeletons. 
+
+
+VICTORY CONDITIONS
+
+	* Player must eliminate all units on other side, or opponent must concede. 
+
