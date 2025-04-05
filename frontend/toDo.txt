@@ -2,7 +2,7 @@ To Do:
 
 * Move current unit functionality 
 
-* End Unit Move functionality, move on to next unit and change turn order 
+* When new turn starts, style divs with units to allow hover border effects
 
 
 
@@ -12,3 +12,4 @@ Done:
 * turn order in global state 
 * Hovering over unit displays info in UiRight 
 * Current Unit displays info in UiLeft
+* End Unit Move functionality, move on to next unit and change turn order 

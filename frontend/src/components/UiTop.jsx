@@ -34,14 +34,13 @@ const UiTop = () => {
 	return (
 		<>
 			<div className='h-[62px] w-[100%] rounded-md bg-stone-600 flex items-center justify-center rounded-md'> 
-				Turn Order
+				<h2 className='mr-5 font-semibold'>Turn Order</h2>
 				{ battle.turnOrder ? 
 					(battle.allUnits.map((unit) => 
-						<div className={`h-[45px] w-[45px] m-1 ${unit.Team === 'friendly' ? 'bg-red-300' : 'bg-green-400'} flex items-center justify-center rounded-md`}><img src={unit.Img}></img></div>
+						<div className={`h-[44px] w-[44px] m-1 border border-4 ${unit.Team === 'friendly' ? 'border-red-700' : 'border-green-700'} flex items-center justify-center rounded-md`}><img src={unit.Img}></img></div>
 					))
 				 : ''
 				}
-				<div className="h-10 w-10" style={{ cursor: "url(/assets/BootCursor.png) 0 0, pointer" }}>Test</div>
 			</div> 
 		</>
 	)

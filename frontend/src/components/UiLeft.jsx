@@ -7,15 +7,25 @@ const UiLeft = () => {
 	// Imported battle context 
 	const { battle } = useContext(BattleContext);
 
+	const unitOptions = 'h-[180px] w-[100%] flex flex-col items-center justify-start'
+
+	// Sort battle.AllUnits to move unit at the start to the end
+	const endTurn = () => {
+		let orderArray = [...battle.allUnits];
+		const firstUnit = orderArray.shift(); //removes and returns the first item;
+		orderArray.push(firstUnit); //push it to the end of the array
+		battle.setAllUnits(orderArray);
+	}
+
 
 	return (
-		<div className='h-[605px] w-[200px] bg-stone-500 flex flex-col items-center justify-start border-2 border-stone-800 rounded-md'>
+		<div className='h-[605px] w-[250px] bg-stone-500 flex flex-col items-center justify-start border-2 border-stone-800 rounded-md'>
 			<h1 className='p-3 text-lg'>Current Unit:</h1>
 			{battle.turnOrder === true && battle.allUnits.length != 0? 
-			  	<div className='CONTAINER flex flex-col items-center justify-center'>
+			  	<div className='CONTAINER flex flex-col items-center justify-center w-[90%]'>
 			  	{battle.allUnits[0].Team === 'friendly' ?
-			  		(<p className='p-3 text-lg text-red-300 font-semibold'>{battle.allUnits[0].Name}</p>) :
-			  		(<p className='p-3 text-lg text-green-500 font-semibold'>{battle.allUnits[0].Name}</p>) 	
+			  		(<p className='p-2 text-lg text-red-300 font-semibold'>{battle.allUnits[0].Name}</p>) :
+			  		(<p className='p-2 text-lg text-green-500 font-semibold'>{battle.allUnits[0].Name}</p>) 	
 
 			  	 }
 					
@@ -41,6 +51,13 @@ const UiLeft = () => {
 					</div>
 					<div className='text-lg font-semibold p-1'>
 						BP:<span className='px-2 text-orange-500'>{battle.allUnits[0].BP}</span>
+					</div>
+					<div className={unitOptions}>
+						<button className='h-[42px] w-[140px] bg-stone-400 mt-4 border border-black cursor-pointer text-md font-semibold rounded-sm hover:bg-stone-300'>Abilities</button>
+						<button className='h-[42px] w-[140px] bg-stone-400 mt-2 border border-black cursor-pointer text-md font-semibold rounded-sm hover:bg-stone-300'
+								onClick={() => endTurn()}>
+								End Turn
+						</button>
 					</div>
 
 				</div> 

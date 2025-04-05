@@ -17,7 +17,7 @@ DISPLAY
 
 	* UiRight.jsx -> Display hovered unit statistics, statuses, img and abilities.
 
-	* UiBtm.jsx -> Display combat / special move preview, inc % of hit, amount of Dmg, effects etc. 
+	* UiBtm.jsx -> Display combat / special move preview, inc % of hit, amount of Dmg, effects etc. Also describes abilites
 
 
 TURNS
@@ -28,7 +28,9 @@ TURNS
 
 	* Movement may come before or after action, but never both. (unless unit has special ability). 
 
-	* When turn ends, unit is removed from the turn order array until the beginning of the next round.
+	* When turn ends, unit is moved to the end of the turn order.
+
+	* Turn orders can be altered only by special abilities. 
 
 	* Special abilites cost BP, and are selected from UiLeft.jsx.
 

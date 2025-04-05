@@ -9,13 +9,13 @@ const UiRight = () => {
 
 		
 	return (
-		<div className='h-[605px] w-[200px] bg-stone-500 flex flex-col items-center justify-start border-2 border-stone-800 rounded-md'>
+		<div className='h-[605px] w-[250px] bg-stone-500 flex flex-col items-center justify-start border-2 border-stone-800 rounded-md'>
 			<h1 className='p-3 text-lg'>Hovered Unit:</h1>
 			{battle.turnOrder === true && battle.allUnits.length != 0 && battle.hoveredUnit ? 
-			  	<div className='CONTAINER flex flex-col items-center justify-center'>
+			  	<div className='CONTAINER flex flex-col items-center justify-center w-[90%]'>
 			  	{battle.hoveredUnit[0].Team === 'friendly' ?
-			  		(<p className='p-3 text-lg text-red-300 font-semibold'>{battle.hoveredUnit[0].Name}</p>) :
-			  		(<p className='p-3 text-lg text-green-500 font-semibold'>{battle.hoveredUnit[0].Name}</p>) 	
+			  		(<p className='p-2 text-lg text-red-300 font-semibold'>{battle.hoveredUnit[0].Name}</p>) :
+			  		(<p className='p-2 text-lg text-green-500 font-semibold'>{battle.hoveredUnit[0].Name}</p>) 	
 
 			  	 }
 					

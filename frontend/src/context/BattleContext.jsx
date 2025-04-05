@@ -6,6 +6,7 @@ const initialState = {
 	enemyUnits: [],
 	allUnits: [],
 	turnOrder: false,
+	endTurn: false,
 }
 
 //Create Context
@@ -20,9 +21,24 @@ export const BattleProvider = ({ children }) => {
 	const [allUnits, setAllUnits] = useState(initialState.allUnits);
 	const [turnOrder, setTurnOrder] = useState(initialState.turnOrder);
 	const [hoveredUnit, setHoveredUnit] = useState();
+	const [endTurn, setEndTurn] = useState(initialState.endTurn);
 
 	return (
-		<BattleContext.Provider value={{ battle: {friendlyUnits, setFriendlyUnits, enemyUnits, setEnemyUnits, allUnits, setAllUnits, turnOrder, setTurnOrder, hoveredUnit, setHoveredUnit} }}>
+		<BattleContext.Provider value={{ battle: 
+										{
+										 friendlyUnits, 
+										 setFriendlyUnits, 
+										 enemyUnits, 
+										 setEnemyUnits, 
+										 allUnits, 
+										 setAllUnits,
+										 turnOrder, 
+										 setTurnOrder, 
+										 hoveredUnit, 
+										 setHoveredUnit, 
+										 endTurn, 
+										 setEndTurn,} 
+										}}>
 			{children}
 		</BattleContext.Provider>
 		);

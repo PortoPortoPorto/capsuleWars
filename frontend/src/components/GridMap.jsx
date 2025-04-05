@@ -74,12 +74,14 @@ const GridMap = () => {
 				...unit,
 				Pos: friendlyUnitPositions[i],
 				Team: 'friendly',
+				Index: i,
 			}));
 			// Do the same for enemyArray
 			const enemyArrayWithPos = enemyArray.map((unit, i) => ({
 				...unit,
 				Pos: enemyUnitPositions[i],
 				Team: 'enemy',
+				Index: i,
 			}));
 
 
@@ -153,6 +155,17 @@ const GridMap = () => {
 		setGridLoaded(true);
 	}
 
+
+	//function to reset grid tiles, between unit turns 
+	const resetGridTiles = () => {
+		let updatedGrid = [...gridState];
+		updatedGrid.forEach((div, index) => {
+			div.className = regClass;
+		})
+
+	}
+
+
 	//function to get movement tiles for current unit, set in state, and render grid accordingly 
 	const getMovementTiles = (unit) => {
 		console.log('unit', unit);
@@ -224,15 +237,25 @@ const GridMap = () => {
 	}, [gridLoaded, changesRendered]);
 
 
+	useEffect(() => {
+	 if(currentUnit === false) return;
+	 if(currentUnit.Index !== battle.allUnits[0].Index) {
+	 	const goToNextTurn = async () => {
+	 		await resetGridTiles();
+	 		await setCurrentUnit(battle.allUnits[0]);
+	 		renderCurrentUnit(battle.allUnits[0]);
+	 	}
+	 	goToNextTurn();
+	 }			
+	}, [battle.allUnits])
 
 
 	// Highlight current unit if gridState has rendered and turnOrder has been set in global context
 	useEffect(() => {
 		if(battle.turnOrder === false) return;
 		if(gridLoaded === true && battle.turnOrder === true); {
-			setCurrentUnit(battle.allUnits[0]);
-			renderCurrentUnit(battle.allUnits[0]);
-
+				setCurrentUnit(battle.allUnits[0]);
+				renderCurrentUnit(battle.allUnits[0]);
 		}
 	}, [battle.turnOrder])
 

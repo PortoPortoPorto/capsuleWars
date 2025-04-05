@@ -18,7 +18,7 @@ function App() {
               CAPSULE WARS PROTOTYPE
         </div>
         <section className='GameContainer h-[800px] w-[100%] bg-black flex items-center justify-center'>
-          <div className='Screen h-[795px] w-[1300px] border-2 bg-stone-600 rounded-sm flex-col items-start justify-center'>
+          <div className='Screen h-[795px] w-[1400px] border-2 bg-stone-600 rounded-sm flex-col items-start justify-center'>
               <UiTop/>
               <div className='flex flex-row h-[605px]'>
                 <UiLeft/>
