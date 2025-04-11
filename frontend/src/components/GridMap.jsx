@@ -4,7 +4,6 @@
 // For now, it’s fine, but if you notice excessive runs, you could wrap BattleProvider’s value in useMemo.
 
 
-
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { BattleContext } from '../context/BattleContext.jsx';
@@ -13,13 +12,15 @@ const GridMap = () => {
 			// Imported battle context 
 			const { battle } = useContext(BattleContext);
 			// div classes for grid
-			const regClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center text-black text-xs';
-			const friendlyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-red-700 cursor-pointer';
-			const enemyUnitClass = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-green-700 cursor-pointer';
-			const currentUnitFriendly = 'h-[55px] w-[55px] border-1 border-red-700 flex items-center justify-center hover:border-2  cursor-pointer';
-			const currentUnitEnemy = 'h-[55px] w-[55px] border-1 border-green-700 flex items-center justify-center hover:border-2 cursor-pointer'; 
-			const movementTile = 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-[#171a18] text-[#171a18] hover:border-neutral-600 text-xs';
-
+			const tileClasses = {
+  				regular: 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center text-black text-xs',
+  				friendly: 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-red-700 cursor-pointer',
+ 				enemy: 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-black hover:border-2 hover:border-green-700 cursor-pointer',
+  				currentFriendly: 'h-[55px] w-[55px] border-1 border-red-700 flex items-center justify-center hover:border-2 cursor-pointer',
+  				currentEnemy: 'h-[55px] w-[55px] border-1 border-green-700 flex items-center justify-center hover:border-2 cursor-pointer',
+  				movement: 'h-[55px] w-[55px] border-1 border-neutral-800 flex items-center justify-center bg-[#171a18] text-[#171a18] hover:border-neutral-600 text-xs',
+				};
+			
 
 
 	// Set Grid State 
@@ -50,7 +51,8 @@ const GridMap = () => {
 	const [movementRange, setMovementRange ] = useState([]); 
 	//Track if current changes are rendered to avoid multiple re-renders (for unit positions)/ Toggle to false when you need a re-render via the useEffect
 	const [changesRendered, setChangesRendered] = useState(false);
-
+	//Track if current unit has moved this turn
+	const [hasMoved, setHasMoved] = useState(false);
 
 
 	// 2) load friendly and enemy unit objects. Call with array of id numbers
@@ -92,34 +94,38 @@ const GridMap = () => {
 		}
 	}
 
+
+	//helper function to update grid (called in renderUnits/renderMovementTiles/renderCurrentUnit)
+	const updateGrid = (callback) => {
+		const newGrid = [...gridState]; // Copies the current gridState
+		callback(newGrid);				// Passes the copy to your function
+		setGridState(newGrid);			// Updates state with the modified copy
+	}
+
 	
 	// 3) Render units in gridState with appropriate positions from friendlyUnits and enemyUnits state
 	const renderUnits = (unitArray) => {
-		// create a shallow copy to avoide mutating original state. Won't touch the original and possibly cause bugs
-		let gridToRender = [...gridState];
-
-		// loop through unitArray and set unit in div at corresponding index (within gridToRender)
-		for(let i = 0; i < unitArray.length; i ++) {
-			const unit = unitArray[i];
-			if(!unit || !unit.Pos || !unit.Img) continue; // skip invalid units 
-			let gridX = unit.Pos.x;
-			let gridY = unit.Pos.y;
-			let img = unit.Img;
-		// Find the index of the tile matching the unit's x and y values
-			const tileIndex = gridToRender.findIndex(tile => tile.x === gridX && tile.y === gridY);
-		//If tile exists, update with unit's image, keeping existing className
-			if(tileIndex !== -1) { // ensure tile exists
-				gridToRender[tileIndex] = {
-					...gridToRender[tileIndex],
-					children: <img src={unit.Img} alt={unit.Name} />
-				};
-
-			} else {
-				console.warn(`No tile found for unit at x:${gridX}, y:${gridY}`);
+		updateGrid((grid) => {
+			// loop through unitArray and set unit in div at corresponding index (within gridState)
+			for(let i = 0; i < unitArray.length; i ++) {
+				const unit = unitArray[i];
+				if(!unit || !unit.Pos || !unit.Img) continue; // skip invalid units 
+				let gridX = unit.Pos.x;
+				let gridY = unit.Pos.y;
+				let img = unit.Img;
+			// Find the index of the tile matching the unit's x and y values
+				const tileIndex = grid.findIndex(tile => tile.x === gridX && tile.y === gridY);
+			//If tile exists, update with unit's image, keeping existing className
+				if(tileIndex !== -1) { // ensure tile exists
+					grid[tileIndex] = {
+						...grid[tileIndex],
+						children: <img src={unit.Img} alt={unit.Name} />
+					};
+				} else {
+					console.warn(`No tile found for unit at x:${gridX}, y:${gridY}`);
+				}
 			}
-		}
-		console.log('GRID POST RENDERUNITS:', gridToRender);
-		setGridState(gridToRender);
+		});
 	}
 
 
@@ -137,18 +143,16 @@ const GridMap = () => {
 
 	// 1) Set up game map with friendly and enemy units 
 	const renderGrid = async() => {
-			const gridArray = [];
-			
-			// load unit objects and store them in useState 
-			await loadUnits(randomiseUnits());
-
+			const gridArray = [];		
+			// load unit objects and store them in useState (if grid hasn't yet been intialised)
+			if(gridLoaded === false)await loadUnits(randomiseUnits());
 			for (let i = 1; i <= 176; i ++ ) {
 				const x = (i -1) % 16;
 				const y = Math.floor((i -1) / 16);
 				const pos = { x, y };
-				let className = regClass;
-				if(friendlyUnitPositions.some(u => u.x === pos.x && u.y === pos.y)) className = friendlyUnitClass;	
-				else if (enemyUnitPositions.some(u => u.x === pos.x && u.y === pos.y)) className = enemyUnitClass;	
+				let className = tileClasses.regular;
+				if(friendlyUnitPositions.some(u => u.x === pos.x && u.y === pos.y)) className = tileClasses.friendly;	
+				else if (enemyUnitPositions.some(u => u.x === pos.x && u.y === pos.y)) className = tileClasses.enemy;	
 				gridArray.push({x, y, className });
 		}
 		if(gridState === false) setGridState(gridArray);
@@ -160,7 +164,7 @@ const GridMap = () => {
 	const resetGridTiles = () => {
 		let updatedGrid = [...gridState];
 		updatedGrid.forEach((div, index) => {
-			div.className = regClass;
+			div.className = tileClasses.regular;
 		})
 
 	}
@@ -191,45 +195,50 @@ const GridMap = () => {
 	};
 
 
+	//Render movement tiles on grid for current unit
 	const renderMovementTiles = (movementTiles) => {
-		let gridArray = [...gridState];
-		// loop through movementTiles array and change colour of corresponding gridArray tile
-		for (let i = 1; i <= movementTiles.length -1; i ++ ) {
-			const tileToRender = gridArray.findIndex(tile => tile.x === movementTiles[i].x && tile.y === movementTiles[i].y);
-			gridArray[tileToRender].className = movementTile;
-		}
-		//push gridArray to state for re-render
-		setGridState(gridArray);
+		updateGrid((grid) => {
+			for (let i = 0; i <= movementTiles.length -1; i ++ ) {
+				const tileToRender = grid.findIndex(tile => tile.x === movementTiles[i].x && tile.y === movementTiles[i].y);
+				grid[tileToRender].className = tileClasses.movement;
+			}
+		});
 	};
 
 	//unit here should be the same as currentUnit in state, didn't use it however, as to avoid missing the state update before calling
 	const renderCurrentUnit = (unit) => {
-		let gridArray = [...gridState];
-		// change class of div sharing x and y values with currenUnit
-		let tileIndex= gridArray.findIndex(tile => tile.x === unit.Pos.x && tile.y === unit.Pos.y);
-		unit.Team === 'friendly' ?
-			gridArray[tileIndex] = {...gridArray[tileIndex], className: currentUnitFriendly } :
-			gridArray[tileIndex] = {...gridArray[tileIndex], className: currentUnitEnemy }
-		setGridState(gridArray);
-	}
+		updateGrid((grid) => {
+			const tileIndex = grid.findIndex(t => t.x === unit.Pos.x && t.y === unit.Pos.y);
+			grid[tileIndex] = {
+				...grid[tileIndex],
+				className: unit.Team === 'friendly' ? tileClasses.currentFriendly : tileClasses.currentEnemy
+			};
+		});
+	};
 
 	// find unit at tile location, and set as current hovered unit in global context
 	const assignHoveredUnit = (tile) => {
 		const unitToRender = battle.allUnits.filter((unit) => unit.Pos.x === tile.x && unit.Pos.y === tile.y);
-		battle.setHoveredUnit(unitToRender);
+		battle.setHoveredUnit(unitToRender[0]);
 	} 
+
+
+    // change currentUnit Pos to selected movementTile. change class of prev tile to regclass. Update state and battleState (context)
+	const moveCurrentUnit = async (currentUnit, tile) => {
+		if(!currentUnit) return;
+		// change unit position in local state 
+	}
 
  
 	useEffect(() => {
-		//if(gridLoaded || changesRendered) return;
-		
+		//if(gridLoaded || changesRendered) return;		
 		const setupAll = async () => {
 			await renderGrid(); // Set gridState and load units
 			if(battle.friendlyUnits.length > 0 && battle.enemyUnits.length > 0 && changesRendered === false) {
 				const completeUnits = [...battle.friendlyUnits, ...battle.enemyUnits];
 				renderUnits(completeUnits); // updates grid with units
-				battle.setAllUnits(completeUnits);
 				setAllUnitPositions(completeUnits.map((unit) => unit.Pos));
+				battle.setAllUnits(completeUnits);
 				setChangesRendered(true);
 			};
 		};
@@ -237,6 +246,7 @@ const GridMap = () => {
 	}, [gridLoaded, changesRendered]);
 
 
+   // When turn ends and order of battle.allUnits changes, re-render grid styling and current unit
 	useEffect(() => {
 	 if(currentUnit === false) return;
 	 if(currentUnit.Index !== battle.allUnits[0].Index) {
@@ -282,7 +292,10 @@ const GridMap = () => {
      					(<div key ={`x:${tile.x}-y:${tile.y}`} className={tile.className} onMouseOver={() => assignHoveredUnit(tile)}>
      						<img src={tile.children.props.src} alt={tile.children.props.alt}/></div>) 
      					:
-     					 (<div key ={`x:${tile.x}-y:${tile.y}`} className={tile.className} style={tile.className === movementTile ? { cursor: "url(/assets/BootCursor.png) 4 4, pointer" } : {}}>
+     					 (<div key ={`x:${tile.x}-y:${tile.y}`} 
+     					 	   className={tile.className} 
+     					 	   style={tile.className === tileClasses.movement ? { cursor: "url(/assets/BootCursor.png) 4 4, pointer" } : {}}
+     					 	   onClick={tile.className === tileClasses.movement ? () => moveCurrentUnit(currentUnit, tile) : null}>
      						{`x:${tile.x} y:${tile.y}`}</div>)
      					))} 
             	</div>

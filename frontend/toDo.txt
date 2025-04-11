@@ -1,6 +1,6 @@
 To Do:
 
-* Move current unit functionality 
+* moveCurrentUnit() function needs to re-render grid with new unit position, also needs to set friendly, enemy and all unit positions in state (study best method)
 
 * When new turn starts, style divs with units to allow hover border effects
 
